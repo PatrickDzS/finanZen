@@ -78,13 +78,16 @@ const FinancialFlow: React.FC<FinancialFlowProps> = ({ income, expenses }) => {
                 return acc;
             }, {} as Record<string, number>);
 
-            Object.entries(expensesByCategory).forEach(([category, amount]) => {
-                if (amount > 0) {
-                    const categoryNodeIndex = nodes.length;
-                    nodes.push({ name: category });
-                    links.push({ source: despesasNodeIndex, target: categoryNodeIndex, value: amount });
+            for (const category in expensesByCategory) {
+                if (Object.prototype.hasOwnProperty.call(expensesByCategory, category)) {
+                    const amount = expensesByCategory[category];
+                    if (amount > 0) {
+                        const categoryNodeIndex = nodes.length;
+                        nodes.push({ name: category });
+                        links.push({ source: despesasNodeIndex, target: categoryNodeIndex, value: amount });
+                    }
                 }
-            });
+            }
         }
 
         if (balance > 0) {
