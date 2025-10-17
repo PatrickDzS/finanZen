@@ -95,7 +95,6 @@ const ExpenseAnalysis: React.FC<ExpenseAnalysisProps> = ({ expenses, income }) =
             acc[expense.category] = (acc[expense.category] || 0) + expense.amount;
             return acc;
         }, {} as Record<string, number>);
-        // FIX: Explicitly cast `value` to Number during sort to prevent type errors.
         return Object.entries(dataMap).map(([name, value]) => ({ name, value })).sort((a, b) => Number(b.value) - Number(a.value));
     }, [expenses]);
     

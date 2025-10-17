@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Modal from './ui/Modal';
 import { getFinancialAdvice, getInvestmentAdvice } from '../services/geminiService';
-// FIX: Re-add 'Goal' import to support the goals feature.
 import type { Expense, Investment, Goal } from '../types';
 import * as Lucide from 'lucide-react';
 import LoadingPig from './ui/LoadingPig';
@@ -12,7 +11,6 @@ interface AIAssistantProps {
     income: number;
     expenses: Expense[];
     balance: number;
-    // FIX: Re-add 'goals' prop to be used for investment advice.
     goals: Goal[];
     investments: Investment[];
     context: 'general' | 'investment';
@@ -101,7 +99,6 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ isOpen, onClose, income, expe
                  if (balance <= 0) {
                      result = "### Comece a Poupar\nSeu saldo está negativo ou zerado. Para investir, o primeiro passo é ter um saldo positivo. Concentre-se em reduzir despesas para começar a investir no próximo mês!";
                 } else {
-                    // FIX: Pass 'goals' to the function call to satisfy the expected 5 arguments.
                     result = await getInvestmentAdvice(income, expenses, balance, investments, goals);
                 }
             } else {
@@ -113,7 +110,6 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ isOpen, onClose, income, expe
         } finally {
             setIsLoading(false);
         }
-    // FIX: Add 'goals' to the dependency array.
     }, [income, expenses, balance, investments, goals, context]);
 
     React.useEffect(() => {
@@ -122,8 +118,6 @@ const AIAssistant: React.FC<AIAssistantProps> = ({ isOpen, onClose, income, expe
             setAdvice('');
             fetchAdvice();
         }
-    // The dependency array is corrected to include fetchAdvice. This ensures
-    // the effect re-runs if income or expenses change, preventing stale data.
     }, [isOpen, fetchAdvice]);
 
     return (

@@ -62,16 +62,12 @@ const FinancialFlow: React.FC<FinancialFlowProps> = ({ income, expenses }) => {
             return { nodes: [], links: [] };
         }
 
-        // Explicitly type the accumulator in the reduce function to ensure correct type inference for totalExpenses.
         const totalExpenses = expenses.reduce((sum: number, exp) => sum + exp.amount, 0);
-        // FIX: Explicitly typing `balance` as a number resolves a TypeScript error where it was being inferred as `unknown`,
-        // causing issues in subsequent comparisons and assignments.
         const balance: number = income - totalExpenses;
 
         const nodes: { name: string }[] = [{ name: 'Renda' }];
         const links: { source: number; target: number; value: number }[] = [];
 
-        // Adiciona o nó "Despesas" e seus filhos (categorias) apenas se houver despesas.
         if (totalExpenses > 0) {
             const despesasNodeIndex = nodes.length;
             nodes.push({ name: 'Despesas' });
@@ -91,7 +87,6 @@ const FinancialFlow: React.FC<FinancialFlowProps> = ({ income, expenses }) => {
             });
         }
 
-        // Adiciona o nó "Saldo" apenas se for positivo.
         if (balance > 0) {
             const saldoNodeIndex = nodes.length;
             nodes.push({ name: 'Saldo' });
@@ -110,7 +105,7 @@ const FinancialFlow: React.FC<FinancialFlowProps> = ({ income, expenses }) => {
     const linkColor = theme === 'dark' ? 'rgba(71, 85, 105, 0.4)' : 'rgba(203, 213, 225, 0.6)';
 
     if (income <= 0) {
-        return null; // Não renderiza o componente se não houver renda.
+        return null;
     }
 
     return (
